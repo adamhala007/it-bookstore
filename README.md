@@ -1,3 +1,3 @@
-# it_bookstore
+# IT Bookstore
 
 Application for IT books
