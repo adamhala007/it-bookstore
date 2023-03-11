@@ -10,7 +10,7 @@ class BooksViewModel extends BaseViewModel
   NewReleaseUseCase _newReleaseUseCase;
 
   final StreamController _streamController =
-      StreamController<BooksViewObject>();
+      StreamController<BooksViewObject>.broadcast();
 
   BooksViewModel(this._newReleaseUseCase);
 
@@ -25,26 +25,39 @@ class BooksViewModel extends BaseViewModel
   }
 
   @override
-  Sink get inputBooksData => _streamController.sink;
-
-  @override
-  Stream<BooksViewObject> get outputBooksData =>
-      _streamController.stream.map((booksViewObject) => booksViewObject);
-
-  @override
   searchNewReleases() async {
     (await _newReleaseUseCase.execute(Void)).fold((failure) {
       print('failure');
     }, (bookStore) {
       print('success');
-      inputBooksData.add(BooksViewObject(bookStore));
+      inputBooksData.add(
+          BooksViewObject(bookStore.total, bookStore.page, bookStore.books));
     });
   }
+
+  @override
+  search(String query) async {
+    (await _newReleaseUseCase.execute(query)).fold((failure) {
+      print('failure');
+    }, (bookStore) {
+      print('success');
+      inputBooksData.add(
+          BooksViewObject(bookStore.total, bookStore.page, bookStore.books));
+    });
+  }
+
+  @override
+  Sink get inputBooksData => _streamController.sink;
+
+  @override
+  Stream<BooksViewObject> get outputBooksData =>
+      _streamController.stream.map((booksViewObject) => booksViewObject);
 }
 
 abstract class BooksViewModelInputs {
   Sink get inputBooksData;
 
+  search(String query);
   searchNewReleases();
 }
 
@@ -53,12 +66,9 @@ abstract class BooksViewModelOutputs {
 }
 
 class BooksViewObject {
-  BookStore bookStore;
+  String total;
+  String? page;
+  List<Book> books;
 
-  BooksViewObject(this.bookStore);
-
-  @override
-  String toString() {
-    return 'BooksViewObject{bookStore: $bookStore}';
-  }
+  BooksViewObject(this.total, this.page, this.books);
 }
