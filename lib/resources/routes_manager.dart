@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:it_bookstore/app/di.dart';
 import 'package:it_bookstore/presentation/book_details/book_details.dart';
 import 'package:it_bookstore/presentation/books/books.dart';
 
@@ -11,10 +12,13 @@ class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case Routes.booksRoute:
+        initBookStoreModule();
         return MaterialPageRoute(builder: (_) => BooksView());
       case Routes.bookDetailsRoute:
+        initBookDetailModule();
         return MaterialPageRoute(builder: (_) => BookDetailsView());
       default:
+        initBookStoreModule();
         return MaterialPageRoute(builder: (_) => BooksView());
     }
   }
