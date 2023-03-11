@@ -3,8 +3,10 @@ import 'package:it_bookstore/app/di.dart';
 import 'package:it_bookstore/domain/model/model.dart';
 import 'package:it_bookstore/presentation/books/books_viewmodel.dart';
 import 'package:it_bookstore/resources/color_manager.dart';
+import 'package:it_bookstore/resources/font_manager.dart';
 import 'package:it_bookstore/resources/styles_manager.dart';
 import 'package:it_bookstore/resources/values_manager.dart';
+import 'package:number_paginator/number_paginator.dart';
 
 class BooksView extends StatefulWidget {
   const BooksView({Key? key}) : super(key: key);
@@ -15,6 +17,8 @@ class BooksView extends StatefulWidget {
 
 class _BooksViewState extends State<BooksView> {
   BooksViewModel _viewModel = instance<BooksViewModel>();
+  TextEditingController searchController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -44,32 +48,81 @@ class _BooksViewState extends State<BooksView> {
           padding: const EdgeInsets.all(AppPadding.p16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Hľadať knihu podľa názvu, autora, ISBN',
+              Text(
+                'IT Bookstore',
+                style: getBoldStyle(
+                    color: ColorManager.black, fontSize: FontSize.s20),
+              ),
+              SizedBox(
+                height: AppSize.s16,
+              ),
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: searchController,
+                  style: getRegularStyle(
+                      color: ColorManager.black, fontSize: FontSize.s13),
+                  decoration: InputDecoration(
+                    hintText: 'Hľadať knihu podľa názvu, autora, ISBN',
+                    suffixIcon: InkWell(
+                      onTap: () {
+                        if (_formKey.currentState != null &&
+                            _formKey.currentState!.validate()) {
+                          _viewModel.search(searchController.text);
+                        }
+                      },
+                      child: Icon(
+                        Icons.search,
+                        color: ColorManager.orange,
+                        size: AppSize.s20,
+                      ),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.length < 2) {
+                      return 'Minimána dĺžka slova 2 znaky.';
+                    }
+                    return null;
+                  },
                 ),
-                onChanged: (value) {
-                  if (value.isEmpty) {
-                    _viewModel.searchNewReleases();
-                  } else {
-                    _viewModel.search(value);
-                  }
-                },
               ),
               SizedBox(
                 height: AppSize.s16,
               ),
               Expanded(
                 child: ListView(
-                  children: _bookCards(viewObject?.books),
+                  children: _scrollWidgets(viewObject),
                 ),
-              )
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  _scrollWidgets(BooksViewObject? viewObject) {
+    List<Widget> widgets = [];
+    if (viewObject != null) {
+      widgets.addAll(_bookCards(viewObject.books));
+    }
+
+    widgets.add(
+      NumberPaginator(
+        initialPage: 0,
+        numberPages: viewObject?.page != null ? viewObject?.total ?? 1 : 1,
+        onPageChange: (int index) {
+          _viewModel.changePage(index);
+        },
+        config: NumberPaginatorUIConfig(
+          buttonSelectedBackgroundColor: ColorManager.orange,
+          buttonUnselectedForegroundColor: ColorManager.black,
+        ),
+      ),
+    );
+    return widgets;
   }
 
   List<Widget> _bookCards(List<Book>? books) {

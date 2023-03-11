@@ -1,18 +1,21 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:it_bookstore/domain/model/model.dart';
 import 'package:it_bookstore/domain/usecase/new_releases_usecase.dart';
+import 'package:it_bookstore/domain/usecase/search_usecase.dart';
 import 'package:it_bookstore/presentation/base/base_viewmodel.dart';
 
 class BooksViewModel extends BaseViewModel
     with BooksViewModelInputs, BooksViewModelOutputs {
   NewReleaseUseCase _newReleaseUseCase;
+  SearchUseCase _searchUseCase;
 
   final StreamController _streamController =
       StreamController<BooksViewObject>.broadcast();
 
-  BooksViewModel(this._newReleaseUseCase);
+  BooksViewModel(this._newReleaseUseCase, this._searchUseCase);
 
   @override
   void start() {
@@ -30,19 +33,23 @@ class BooksViewModel extends BaseViewModel
       print('failure');
     }, (bookStore) {
       print('success');
-      inputBooksData.add(
-          BooksViewObject(bookStore.total, bookStore.page, bookStore.books));
+      inputBooksData.add(BooksViewObject(
+          max(int.tryParse(bookStore.total) ?? 1, 1),
+          int.tryParse(bookStore.page ?? ''),
+          bookStore.books));
     });
   }
 
   @override
   search(String query) async {
-    (await _newReleaseUseCase.execute(query)).fold((failure) {
+    (await _searchUseCase.execute(query)).fold((failure) {
       print('failure');
     }, (bookStore) {
-      print('success');
-      inputBooksData.add(
-          BooksViewObject(bookStore.total, bookStore.page, bookStore.books));
+      print('${bookStore.page}/${bookStore.total}');
+      inputBooksData.add(BooksViewObject(
+          max(int.tryParse(bookStore.total) ?? 1, 1),
+          int.tryParse(bookStore.page ?? '1') ?? 1,
+          bookStore.books));
     });
   }
 
@@ -52,11 +59,15 @@ class BooksViewModel extends BaseViewModel
   @override
   Stream<BooksViewObject> get outputBooksData =>
       _streamController.stream.map((booksViewObject) => booksViewObject);
+
+  @override
+  changePage(int page) {}
 }
 
 abstract class BooksViewModelInputs {
   Sink get inputBooksData;
 
+  changePage(int page);
   search(String query);
   searchNewReleases();
 }
@@ -66,8 +77,8 @@ abstract class BooksViewModelOutputs {
 }
 
 class BooksViewObject {
-  String total;
-  String? page;
+  int total;
+  int? page;
   List<Book> books;
 
   BooksViewObject(this.total, this.page, this.books);

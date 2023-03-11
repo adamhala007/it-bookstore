@@ -5,6 +5,7 @@ import 'package:it_bookstore/data/network/dio_factory.dart';
 import 'package:it_bookstore/data/repository/repository_impl.dart';
 import 'package:it_bookstore/domain/repository/repository.dart';
 import 'package:it_bookstore/domain/usecase/new_releases_usecase.dart';
+import 'package:it_bookstore/domain/usecase/search_usecase.dart';
 import 'package:it_bookstore/presentation/books/books_viewmodel.dart';
 
 final instance = GetIt.instance;
@@ -25,7 +26,9 @@ initBookStoreModule() {
   if (!GetIt.I.isRegistered<NewReleaseUseCase>()) {
     instance.registerFactory<NewReleaseUseCase>(
         () => NewReleaseUseCase(instance()));
-    instance.registerFactory<BooksViewModel>(() => BooksViewModel(instance()));
+    instance.registerFactory<SearchUseCase>(() => SearchUseCase(instance()));
+    instance.registerFactory<BooksViewModel>(
+        () => BooksViewModel(instance(), instance()));
   }
 }
 
