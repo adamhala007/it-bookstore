@@ -1,40 +1,43 @@
 import 'package:it_bookstore/app/extension.dart';
 import 'package:it_bookstore/data/responses/responses.dart';
+import 'package:it_bookstore/data/util/bookstore_util.dart';
 import 'package:it_bookstore/domain/model/model.dart';
 
-const EMPTY_LIST = [];
-const Map<String, String> EMPTY_MAP = {};
-const EMPTY_STRING = "";
-const ZERO = 0;
+const emptyList = [];
+const Map<String, String> emptyMap = {};
+const emptyString = "";
+const zero = 0;
 
 extension BookStoreResponseMapper on BookStoreResponse? {
   BookStore toDomain() {
     return BookStore(
-        this?.total?.orEmpty() ?? EMPTY_STRING,
-        this?.page?.orEmpty() ?? EMPTY_STRING,
-        (this?.books?.map((bookResponse) => bookResponse.toDomain()).toList())
-                as List<Book>? ??
-            (EMPTY_LIST as List<Book>));
+        BookStoreUtil.countMaxPage(this?.total),
+        this?.page?.orEmpty() ?? emptyString,
+        (this
+                ?.books
+                ?.map((bookResponse) => bookResponse.toDomain())
+                .toList()) ??
+            (emptyList as List<Book>));
   }
 }
 
 extension BookResponseMapper on BookResponse? {
   Book toDomain() {
     return Book(
-        this?.error?.orEmpty() ?? EMPTY_STRING,
-        this?.title?.orEmpty() ?? EMPTY_STRING,
-        this?.subtitle?.orEmpty() ?? EMPTY_STRING,
-        this?.authors?.orEmpty() ?? EMPTY_STRING,
-        this?.publisher?.orEmpty() ?? EMPTY_STRING,
-        this?.isbn10?.orEmpty() ?? EMPTY_STRING,
-        this?.isbn13?.orEmpty() ?? EMPTY_STRING,
-        this?.pages?.orEmpty() ?? EMPTY_STRING,
-        this?.year?.orEmpty() ?? EMPTY_STRING,
-        this?.rating?.orEmpty() ?? EMPTY_STRING,
-        this?.desc?.orEmpty() ?? EMPTY_STRING,
-        this?.price?.orEmpty() ?? EMPTY_STRING,
-        this?.image?.orEmpty() ?? EMPTY_STRING,
-        this?.url?.orEmpty() ?? EMPTY_STRING,
-        this?.pdf ?? EMPTY_MAP);
+        this?.error?.orEmpty() ?? emptyString,
+        this?.title?.orEmpty() ?? emptyString,
+        this?.subtitle?.orEmpty() ?? emptyString,
+        this?.authors?.orEmpty() ?? emptyString,
+        this?.publisher?.orEmpty() ?? emptyString,
+        this?.isbn10?.orEmpty() ?? emptyString,
+        this?.isbn13?.orEmpty() ?? emptyString,
+        this?.pages?.orEmpty() ?? emptyString,
+        this?.year?.orEmpty() ?? emptyString,
+        this?.rating?.orEmpty() ?? emptyString,
+        this?.desc?.orEmpty() ?? emptyString,
+        this?.price?.orEmpty() ?? emptyString,
+        this?.image?.orEmpty() ?? emptyString,
+        this?.url?.orEmpty() ?? emptyString,
+        this?.pdf ?? emptyMap);
   }
 }

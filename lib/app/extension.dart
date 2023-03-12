@@ -3,7 +3,7 @@ import 'package:it_bookstore/data/mapper/mapper.dart';
 extension NonNullString on String? {
   String orEmpty() {
     if (this == null) {
-      return EMPTY_STRING;
+      return emptyString;
     } else {
       return this!;
     }
@@ -13,7 +13,7 @@ extension NonNullString on String? {
 extension NonNullInteger on int? {
   int orZero() {
     if (this == null) {
-      return ZERO;
+      return zero;
     } else {
       return this!;
     }
@@ -23,7 +23,7 @@ extension NonNullInteger on int? {
 extension NonNullList on List? {
   List orEmpty() {
     if (this == null) {
-      return EMPTY_LIST;
+      return emptyList;
     } else {
       return this!;
     }

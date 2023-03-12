@@ -39,15 +39,15 @@ class Book {
 }
 
 class BookStore {
-  String total;
+  int? maxPage;
   String? page;
   List<Book> books;
 
-  BookStore(this.total, this.page, this.books);
+  BookStore(this.maxPage, this.page, this.books);
 
   @override
   String toString() {
-    return 'BookStore{total: $total, page: $page, books: $books}';
+    return 'BookStore{total: $maxPage, page: $page, books: $books}';
   }
 }
 

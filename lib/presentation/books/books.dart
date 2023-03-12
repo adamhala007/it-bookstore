@@ -117,7 +117,7 @@ class _BooksViewState extends State<BooksView> {
 
     widgets.add(
       NumberPaginator(
-        numberPages: viewObject?.total ?? 1,
+        numberPages: viewObject?.maxPage ?? 1,
         onPageChange: (int index) async {
           await _viewModel.changePage(max(index, 1));
         },

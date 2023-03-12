@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ffi';
-import 'dart:math';
 
 import 'package:it_bookstore/domain/model/model.dart';
 import 'package:it_bookstore/domain/usecase/new_releases_usecase.dart';
@@ -36,10 +35,8 @@ class BooksViewModel extends BaseViewModel
   @override
   searchNewReleases() async {
     (await _newReleaseUseCase.execute(Void)).fold((failure) {}, (bookStore) {
-      inputBooksData.add(BooksViewObject(
-          max(int.tryParse(bookStore.total) ?? 1, 1),
-          int.tryParse(bookStore.page ?? ''),
-          bookStore.books));
+      inputBooksData.add(BooksViewObject(bookStore.maxPage,
+          int.tryParse(bookStore.page ?? ''), bookStore.books));
     });
   }
 
@@ -47,10 +44,8 @@ class BooksViewModel extends BaseViewModel
   search(String query) async {
     searchQuery = query;
     (await _searchUseCase.execute(query)).fold((failure) {}, (bookStore) {
-      inputBooksData.add(BooksViewObject(
-          max(int.tryParse(bookStore.total) ?? 1, 1),
-          int.tryParse(bookStore.page ?? '1') ?? 1,
-          bookStore.books));
+      inputBooksData.add(BooksViewObject(bookStore.maxPage,
+          int.tryParse(bookStore.page ?? '1') ?? 1, bookStore.books));
     });
   }
 
@@ -60,38 +55,8 @@ class BooksViewModel extends BaseViewModel
       this.page = page;
       (await _paginatedSearchUseCase.execute(Query(searchQuery, page)))
           .fold((failure) {}, (bookStore) {
-        inputBooksData.add(BooksViewObject(
-            max(int.tryParse(bookStore.total) ?? 1, 1),
-            int.tryParse(bookStore.page ?? '1') ?? 1,
-            bookStore.books));
-      });
-    }
-  }
-
-  @override
-  nextPage() async {
-    if (searchQuery.isNotEmpty && page != null) {
-      page = page! + 1;
-      (await _paginatedSearchUseCase.execute(Query(searchQuery, page!)))
-          .fold((failure) {}, (bookStore) {
-        inputBooksData.add(BooksViewObject(
-            max(int.tryParse(bookStore.total) ?? 1, 1),
-            int.tryParse(bookStore.page ?? '1') ?? 1,
-            bookStore.books));
-      });
-    }
-  }
-
-  @override
-  previousPage() async {
-    if (searchQuery.isNotEmpty && page != null) {
-      page = min(page! - 1, 1);
-      (await _paginatedSearchUseCase.execute(Query(searchQuery, page!)))
-          .fold((failure) {}, (bookStore) {
-        inputBooksData.add(BooksViewObject(
-            max(int.tryParse(bookStore.total) ?? 1, 1),
-            int.tryParse(bookStore.page ?? '1') ?? 1,
-            bookStore.books));
+        inputBooksData.add(BooksViewObject(bookStore.maxPage,
+            int.tryParse(bookStore.page ?? '1') ?? 1, bookStore.books));
       });
     }
   }
@@ -108,8 +73,6 @@ abstract class BooksViewModelInputs {
   Sink get inputBooksData;
 
   changePage(int page);
-  previousPage();
-  nextPage();
   search(String query);
   searchNewReleases();
 }
@@ -119,9 +82,9 @@ abstract class BooksViewModelOutputs {
 }
 
 class BooksViewObject {
-  int total;
+  int? maxPage;
   int? page;
   List<Book> books;
 
-  BooksViewObject(this.total, this.page, this.books);
+  BooksViewObject(this.maxPage, this.page, this.books);
 }

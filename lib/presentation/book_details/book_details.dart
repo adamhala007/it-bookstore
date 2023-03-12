@@ -193,7 +193,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                     Expanded(
                       flex: 2,
                       child: Text(
-                        '${book.pages}',
+                        book.pages,
                         style: getRegularStyle(
                             color: ColorManager.black, fontSize: FontSize.s13),
                       ),
@@ -239,7 +239,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                     Expanded(
                       flex: 2,
                       child: Text(
-                        '${book.isbn13}',
+                        book.isbn13,
                         style: getRegularStyle(
                             color: ColorManager.black, fontSize: FontSize.s13),
                       ),
