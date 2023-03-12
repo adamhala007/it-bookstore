@@ -55,7 +55,18 @@ class _BookDetailsViewState extends State<BookDetailsView> {
     if (viewObject == null) {
       return Container();
     }
-    Book book = viewObject.book;
+
+    if (viewObject.errorCode != null || viewObject.book == null) {
+      return Center(
+        child: Text(
+          viewObject.errorMsg ?? '',
+          style:
+              getBoldStyle(color: ColorManager.black, fontSize: FontSize.s26),
+        ),
+      );
+    }
+
+    Book book = viewObject.book!;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(AppPadding.p8),

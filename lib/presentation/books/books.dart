@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:it_bookstore/app/di.dart';
 import 'package:it_bookstore/domain/model/model.dart';
 import 'package:it_bookstore/presentation/books/books_viewmodel.dart';
@@ -45,6 +46,12 @@ class _BooksViewState extends State<BooksView> {
   }
 
   Widget _getContentWidget(BooksViewObject? viewObject) {
+    if (viewObject?.errorCode != null) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+        _showErrorMsg(viewObject!);
+      });
+    }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorManager.lightGray,
@@ -211,6 +218,12 @@ class _BooksViewState extends State<BooksView> {
         ),
       ),
     );
+  }
+
+  _showErrorMsg(BooksViewObject viewObject) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('${viewObject.errorMsg}'),
+    ));
   }
 
   @override

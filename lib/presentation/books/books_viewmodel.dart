@@ -34,7 +34,10 @@ class BooksViewModel extends BaseViewModel
 
   @override
   searchNewReleases() async {
-    (await _newReleaseUseCase.execute(Void)).fold((failure) {}, (bookStore) {
+    (await _newReleaseUseCase.execute(Void)).fold((failure) {
+      inputBooksData.add(BooksViewObject(1, 1, [],
+          errorCode: failure.code, errorMsg: failure.message));
+    }, (bookStore) {
       inputBooksData.add(BooksViewObject(bookStore.maxPage,
           int.tryParse(bookStore.page ?? ''), bookStore.books));
     });
@@ -43,7 +46,10 @@ class BooksViewModel extends BaseViewModel
   @override
   search(String query) async {
     searchQuery = query;
-    (await _searchUseCase.execute(query)).fold((failure) {}, (bookStore) {
+    (await _searchUseCase.execute(query)).fold((failure) {
+      inputBooksData.add(BooksViewObject(1, 1, [],
+          errorCode: failure.code, errorMsg: failure.message));
+    }, (bookStore) {
       inputBooksData.add(BooksViewObject(bookStore.maxPage,
           int.tryParse(bookStore.page ?? '1') ?? 1, bookStore.books));
     });
@@ -53,8 +59,11 @@ class BooksViewModel extends BaseViewModel
   changePage(int page) async {
     if (searchQuery.isNotEmpty && this.page != page) {
       this.page = page;
-      (await _paginatedSearchUseCase.execute(Query(searchQuery, page)))
-          .fold((failure) {}, (bookStore) {
+      (await _paginatedSearchUseCase.execute(Query(searchQuery, page))).fold(
+          (failure) {
+        inputBooksData.add(BooksViewObject(1, 1, [],
+            errorCode: failure.code, errorMsg: failure.message));
+      }, (bookStore) {
         inputBooksData.add(BooksViewObject(bookStore.maxPage,
             int.tryParse(bookStore.page ?? '1') ?? 1, bookStore.books));
       });
@@ -82,9 +91,12 @@ abstract class BooksViewModelOutputs {
 }
 
 class BooksViewObject {
+  int? errorCode;
+  String? errorMsg;
   int? maxPage;
   int? page;
   List<Book> books;
 
-  BooksViewObject(this.maxPage, this.page, this.books);
+  BooksViewObject(this.maxPage, this.page, this.books,
+      {this.errorCode, this.errorMsg});
 }

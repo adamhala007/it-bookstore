@@ -23,7 +23,10 @@ class BookDetailsViewModel extends BaseViewModel
 
   @override
   loadDetails(String isbn13) async {
-    (await _loadBookDetailsUseCase.execute(isbn13)).fold((failure) {}, (book) {
+    (await _loadBookDetailsUseCase.execute(isbn13)).fold((failure) {
+      inputBookDetailsData.add(BookDetailsViewObject(null,
+          errorCode: failure.code, errorMsg: failure.message));
+    }, (book) {
       inputBookDetailsData.add(BookDetailsViewObject(book));
     });
   }
@@ -48,7 +51,9 @@ abstract class BookDetailsViewModelOutputs {
 }
 
 class BookDetailsViewObject {
-  Book book;
+  int? errorCode;
+  String? errorMsg;
+  Book? book;
 
-  BookDetailsViewObject(this.book);
+  BookDetailsViewObject(this.book, {this.errorCode, this.errorMsg});
 }
