@@ -1,0 +1,10 @@
+{
+  "buy": "Kúpiť",
+  "description": "Popis",
+  "page_no": "Strana {}",
+  "pages": "Počet strán",
+  "preview": "Ukážka",
+  "publisher": "Vydavateľ",
+  "search_by": "Hľadať knihu podľa názvu, autora, ISBN, ...",
+  "year": "Rok"
+}

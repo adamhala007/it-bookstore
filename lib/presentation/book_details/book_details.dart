@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:it_bookstore/app/di.dart';
@@ -8,6 +9,8 @@ import 'package:it_bookstore/resources/font_manager.dart';
 import 'package:it_bookstore/resources/styles_manager.dart';
 import 'package:it_bookstore/resources/values_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../resources/strings_manager.dart';
 
 class BookDetailsView extends StatefulWidget {
   String? isbn13;
@@ -150,7 +153,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                   child: Divider(),
                 ),
                 Text(
-                  'Popis',
+                  AppStrings.description.tr(),
                   style: getSemiBoldStyle(
                       color: ColorManager.black, fontSize: FontSize.s14),
                 ),
@@ -173,7 +176,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                     Expanded(
                       flex: 1,
                       child: Text(
-                        'Publisher:',
+                        '${AppStrings.publisher.tr()}:',
                         style: getSemiBoldStyle(
                             color: ColorManager.black, fontSize: FontSize.s14),
                       ),
@@ -196,7 +199,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                     Expanded(
                       flex: 1,
                       child: Text(
-                        'Pages:',
+                        '${AppStrings.pages.tr()}:',
                         style: getSemiBoldStyle(
                             color: ColorManager.black, fontSize: FontSize.s14),
                       ),
@@ -219,7 +222,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                     Expanded(
                       flex: 1,
                       child: Text(
-                        'Year:',
+                        '${AppStrings.year.tr()}:',
                         style: getSemiBoldStyle(
                             color: ColorManager.black, fontSize: FontSize.s14),
                       ),
@@ -286,7 +289,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                                 size: AppSize.s20,
                               ),
                               label: Text(
-                                'Kúpiť',
+                                AppStrings.buy.tr(),
                                 style: getMediumStyle(
                                   color: ColorManager.orange,
                                   fontSize: FontSize.s16,
@@ -319,7 +322,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
     List<Widget> widgets = [];
     widgets.add(
       Text(
-        'Ukážka',
+        AppStrings.preview.tr(),
         style:
             getSemiBoldStyle(color: ColorManager.black, fontSize: FontSize.s14),
       ),

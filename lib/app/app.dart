@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:it_bookstore/resources/routes_manager.dart';
 import 'package:it_bookstore/resources/theme_manager.dart';
@@ -16,6 +17,9 @@ class _ItBookstoreAppState extends State<ItBookstoreApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.getRoute,
       initialRoute: Routes.booksRoute,

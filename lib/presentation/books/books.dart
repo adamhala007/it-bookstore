@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:it_bookstore/app/di.dart';
@@ -8,6 +9,7 @@ import 'package:it_bookstore/presentation/books/books_viewmodel.dart';
 import 'package:it_bookstore/resources/color_manager.dart';
 import 'package:it_bookstore/resources/font_manager.dart';
 import 'package:it_bookstore/resources/routes_manager.dart';
+import 'package:it_bookstore/resources/strings_manager.dart';
 import 'package:it_bookstore/resources/styles_manager.dart';
 import 'package:it_bookstore/resources/values_manager.dart';
 import 'package:number_paginator/number_paginator.dart';
@@ -23,7 +25,6 @@ class _BooksViewState extends State<BooksView> {
   BooksViewModel _viewModel = instance<BooksViewModel>();
   TextEditingController searchController = TextEditingController();
   NumberPaginatorController paginatorController = NumberPaginatorController();
-  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -69,34 +70,22 @@ class _BooksViewState extends State<BooksView> {
               SizedBox(
                 height: AppSize.s16,
               ),
-              Form(
-                key: _formKey,
-                child: TextFormField(
-                  controller: searchController,
-                  style: getRegularStyle(
-                      color: ColorManager.black, fontSize: FontSize.s13),
-                  decoration: InputDecoration(
-                    hintText: 'Hľadať knihu podľa názvu, autora, ISBN',
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        if (_formKey.currentState != null &&
-                            _formKey.currentState!.validate()) {
-                          _viewModel.search(searchController.text);
-                        }
-                      },
-                      child: Icon(
-                        Icons.search,
-                        color: ColorManager.orange,
-                        size: AppSize.s20,
-                      ),
+              TextFormField(
+                controller: searchController,
+                style: getRegularStyle(
+                    color: ColorManager.black, fontSize: FontSize.s13),
+                decoration: InputDecoration(
+                  hintText: AppStrings.searchBy.tr(),
+                  suffixIcon: InkWell(
+                    onTap: () {
+                      _viewModel.search(searchController.text);
+                    },
+                    child: Icon(
+                      Icons.search,
+                      color: ColorManager.orange,
+                      size: AppSize.s20,
                     ),
                   ),
-                  validator: (value) {
-                    /*if (value == null || value.length < 2) {
-                      return 'Minimána dĺžka slova 2 znaky.';
-                    }*/
-                    return null;
-                  },
                 ),
               ),
               SizedBox(
@@ -137,7 +126,7 @@ class _BooksViewState extends State<BooksView> {
         contentBuilder: (index) => Expanded(
           child: Center(
             child: Text(
-              'Strana ${max(index, 1)}',
+              AppStrings.pageNo.tr(args: ['${max(index, 1)}']),
               style: getBoldStyle(
                   color: ColorManager.black, fontSize: FontSize.s14),
             ),
@@ -163,7 +152,7 @@ class _BooksViewState extends State<BooksView> {
             arguments: book.isbn13);
       },
       child: Container(
-        height: 180,
+        height: AppSize.s180,
         child: Card(
           child: Row(
             children: [
@@ -203,7 +192,7 @@ class _BooksViewState extends State<BooksView> {
                               size: AppSize.s20,
                             ),
                             label: Text(
-                              'Kúpiť',
+                              AppStrings.buy.tr(),
                               style: getMediumStyle(color: ColorManager.orange),
                             ),
                           ),
