@@ -3,12 +3,12 @@ import 'package:it_bookstore/data/responses/responses.dart';
 import 'package:it_bookstore/domain/model/model.dart';
 
 const EMPTY_LIST = [];
+const Map<String, String> EMPTY_MAP = {};
 const EMPTY_STRING = "";
 const ZERO = 0;
 
 extension BookStoreResponseMapper on BookStoreResponse? {
   BookStore toDomain() {
-    //print(this?.books.orEmpty() ?? 'No total :(');
     return BookStore(
         this?.total?.orEmpty() ?? EMPTY_STRING,
         this?.page?.orEmpty() ?? EMPTY_STRING,
@@ -35,6 +35,6 @@ extension BookResponseMapper on BookResponse? {
         this?.price?.orEmpty() ?? EMPTY_STRING,
         this?.image?.orEmpty() ?? EMPTY_STRING,
         this?.url?.orEmpty() ?? EMPTY_STRING,
-        this?.pdf);
+        this?.pdf ?? EMPTY_MAP);
   }
 }

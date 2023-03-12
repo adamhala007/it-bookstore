@@ -37,7 +37,9 @@ BookResponse _$BookResponseFromJson(Map<String, dynamic> json) => BookResponse(
       json['price'] as String?,
       json['image'] as String?,
       json['url'] as String?,
-      json['pdf'],
+      (json['pdf'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$BookResponseToJson(BookResponse instance) =>

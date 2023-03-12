@@ -16,7 +16,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => BooksView());
       case Routes.bookDetailsRoute:
         initBookDetailModule();
-        return MaterialPageRoute(builder: (_) => BookDetailsView());
+        return MaterialPageRoute(
+            builder: (_) => BookDetailsView(
+                  routeSettings: routeSettings,
+                ));
       default:
         initBookStoreModule();
         return MaterialPageRoute(builder: (_) => BooksView());

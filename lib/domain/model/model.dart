@@ -13,7 +13,7 @@ class Book {
   String price;
   String image;
   String url;
-  dynamic pdf;
+  Map<String, String> pdf;
 
   Book(
       this.error,

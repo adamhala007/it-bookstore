@@ -8,4 +8,5 @@ class ColorManager {
   static const Color gray =
       Color.fromRGBO(234, 234, 234, 1.0); //HexColor.fromHex("#EAEAEA");
   static const Color lightGray = Color.fromRGBO(246, 246, 246, 1.0);
+  static const Color darkGray = Color.fromRGBO(96, 95, 95, 1.0);
 }

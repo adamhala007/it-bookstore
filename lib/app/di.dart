@@ -4,8 +4,10 @@ import 'package:it_bookstore/data/network/app_api.dart';
 import 'package:it_bookstore/data/network/dio_factory.dart';
 import 'package:it_bookstore/data/repository/repository_impl.dart';
 import 'package:it_bookstore/domain/repository/repository.dart';
+import 'package:it_bookstore/domain/usecase/load_book_details_usecase.dart';
 import 'package:it_bookstore/domain/usecase/new_releases_usecase.dart';
 import 'package:it_bookstore/domain/usecase/search_usecase.dart';
+import 'package:it_bookstore/presentation/book_details/book_details_viewmodel.dart';
 import 'package:it_bookstore/presentation/books/books_viewmodel.dart';
 
 final instance = GetIt.instance;
@@ -32,4 +34,11 @@ initBookStoreModule() {
   }
 }
 
-initBookDetailModule() {}
+initBookDetailModule() {
+  if (!GetIt.I.isRegistered<LoadBookDetailsUseCase>()) {
+    instance.registerFactory<LoadBookDetailsUseCase>(
+        () => LoadBookDetailsUseCase(instance()));
+    instance.registerFactory<BookDetailsViewModel>(
+        () => BookDetailsViewModel(instance()));
+  }
+}

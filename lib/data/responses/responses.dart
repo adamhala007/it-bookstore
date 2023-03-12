@@ -55,7 +55,7 @@ class BookResponse {
   @JsonKey(name: 'url')
   String? url;
   @JsonKey(name: 'pdf')
-  dynamic pdf;
+  Map<String, String>? pdf;
 
   BookResponse(
       this.error,
