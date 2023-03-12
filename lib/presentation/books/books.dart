@@ -4,6 +4,7 @@ import 'package:it_bookstore/domain/model/model.dart';
 import 'package:it_bookstore/presentation/books/books_viewmodel.dart';
 import 'package:it_bookstore/resources/color_manager.dart';
 import 'package:it_bookstore/resources/font_manager.dart';
+import 'package:it_bookstore/resources/routes_manager.dart';
 import 'package:it_bookstore/resources/styles_manager.dart';
 import 'package:it_bookstore/resources/values_manager.dart';
 import 'package:number_paginator/number_paginator.dart';
@@ -134,58 +135,64 @@ class _BooksViewState extends State<BooksView> {
   }
 
   Widget _getBookWidget(Book book) {
-    return Container(
-      height: 180,
-      child: Card(
-        child: Row(
-          children: [
-            Expanded(flex: 2, child: Image.network(book.image)),
-            Expanded(
-              flex: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(
-                  AppPadding.p8,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        book.title,
-                        style: getBoldStyle(color: Colors.black),
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, Routes.bookDetailsRoute,
+            arguments: book.isbn13);
+      },
+      child: Container(
+        height: 180,
+        child: Card(
+          child: Row(
+            children: [
+              Expanded(flex: 2, child: Image.network(book.image)),
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    AppPadding.p8,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          book.title,
+                          style: getBoldStyle(color: Colors.black),
+                        ),
                       ),
-                    ),
-                    Text(
-                      book.subtitle,
-                      style: getItalicStyle(color: Colors.black),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          book.price,
-                          style: getSemiBoldStyle(color: Colors.black),
-                        ),
-                        OutlinedButton.icon(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.shopping_cart,
-                            color: ColorManager.orange,
-                            size: AppSize.s20,
+                      Text(
+                        book.subtitle,
+                        style: getItalicStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            book.price,
+                            style: getSemiBoldStyle(color: Colors.black),
                           ),
-                          label: Text(
-                            'Kúpiť',
-                            style: getMediumStyle(color: ColorManager.orange),
+                          OutlinedButton.icon(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.shopping_cart,
+                              color: ColorManager.orange,
+                              size: AppSize.s20,
+                            ),
+                            label: Text(
+                              'Kúpiť',
+                              style: getMediumStyle(color: ColorManager.orange),
+                            ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
