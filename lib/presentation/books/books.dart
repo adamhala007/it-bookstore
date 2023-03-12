@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:it_bookstore/app/di.dart';
 import 'package:it_bookstore/domain/model/model.dart';
@@ -19,6 +21,7 @@ class BooksView extends StatefulWidget {
 class _BooksViewState extends State<BooksView> {
   BooksViewModel _viewModel = instance<BooksViewModel>();
   TextEditingController searchController = TextEditingController();
+  NumberPaginatorController paginatorController = NumberPaginatorController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -82,9 +85,9 @@ class _BooksViewState extends State<BooksView> {
                     ),
                   ),
                   validator: (value) {
-                    if (value == null || value.length < 2) {
+                    /*if (value == null || value.length < 2) {
                       return 'Minimána dĺžka slova 2 znaky.';
-                    }
+                    }*/
                     return null;
                   },
                 ),
@@ -110,16 +113,28 @@ class _BooksViewState extends State<BooksView> {
       widgets.addAll(_bookCards(viewObject.books));
     }
 
+    paginatorController.currentPage = viewObject?.page ?? 1;
+
     widgets.add(
       NumberPaginator(
-        initialPage: 0,
-        numberPages: viewObject?.page != null ? viewObject?.total ?? 1 : 1,
-        onPageChange: (int index) {
-          _viewModel.changePage(index);
+        numberPages: viewObject?.total ?? 1,
+        onPageChange: (int index) async {
+          await _viewModel.changePage(max(index, 1));
         },
         config: NumberPaginatorUIConfig(
           buttonSelectedBackgroundColor: ColorManager.orange,
-          buttonUnselectedForegroundColor: ColorManager.black,
+          buttonUnselectedForegroundColor: ColorManager.orange,
+          mode: ContentDisplayMode.hidden,
+        ),
+        controller: paginatorController,
+        contentBuilder: (index) => Expanded(
+          child: Center(
+            child: Text(
+              'Strana ${max(index, 1)}',
+              style: getBoldStyle(
+                  color: ColorManager.black, fontSize: FontSize.s14),
+            ),
+          ),
         ),
       ),
     );

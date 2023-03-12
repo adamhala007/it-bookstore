@@ -50,3 +50,10 @@ class BookStore {
     return 'BookStore{total: $total, page: $page, books: $books}';
   }
 }
+
+class Query {
+  String query;
+  int page;
+
+  Query(this.query, this.page);
+}

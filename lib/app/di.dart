@@ -6,6 +6,7 @@ import 'package:it_bookstore/data/repository/repository_impl.dart';
 import 'package:it_bookstore/domain/repository/repository.dart';
 import 'package:it_bookstore/domain/usecase/load_book_details_usecase.dart';
 import 'package:it_bookstore/domain/usecase/new_releases_usecase.dart';
+import 'package:it_bookstore/domain/usecase/paginated_search_usecase.dart';
 import 'package:it_bookstore/domain/usecase/search_usecase.dart';
 import 'package:it_bookstore/presentation/book_details/book_details_viewmodel.dart';
 import 'package:it_bookstore/presentation/books/books_viewmodel.dart';
@@ -29,8 +30,10 @@ initBookStoreModule() {
     instance.registerFactory<NewReleaseUseCase>(
         () => NewReleaseUseCase(instance()));
     instance.registerFactory<SearchUseCase>(() => SearchUseCase(instance()));
+    instance.registerFactory<PaginatedSearchUseCase>(
+        () => PaginatedSearchUseCase(instance()));
     instance.registerFactory<BooksViewModel>(
-        () => BooksViewModel(instance(), instance()));
+        () => BooksViewModel(instance(), instance(), instance()));
   }
 }
 

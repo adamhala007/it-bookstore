@@ -23,10 +23,7 @@ class BookDetailsViewModel extends BaseViewModel
 
   @override
   loadDetails(String isbn13) async {
-    (await _loadBookDetailsUseCase.execute(isbn13)).fold((failure) {
-      print('failure');
-    }, (book) {
-      print('success');
+    (await _loadBookDetailsUseCase.execute(isbn13)).fold((failure) {}, (book) {
       inputBookDetailsData.add(BookDetailsViewObject(book));
     });
   }

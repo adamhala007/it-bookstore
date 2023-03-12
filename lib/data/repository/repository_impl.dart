@@ -47,7 +47,6 @@ class RepositoryImpl extends Repository {
       final response = await _remoteDataSource.searchNewReleases();
       return Right(response.toDomain());
     } catch (error) {
-      print('error: $error');
       return Left(Failure(-1, "error")); // TODO error handling
     }
   }
