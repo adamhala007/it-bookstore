@@ -80,7 +80,7 @@ class _BookDetailsViewState extends State<BookDetailsView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  height: AppSize.s170,
+                  height: AppSize.s190,
                   child: Row(
                     children: [
                       Expanded(

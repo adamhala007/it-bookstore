@@ -10,7 +10,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await initAppModule();
   runApp(EasyLocalization(
-      supportedLocales: const [slovakLocal],
+      supportedLocales: const [slovakLocal, englishLocal],
       path: assetsPathLocalisations,
       child: ItBookstoreApp()));
 }

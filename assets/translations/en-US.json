@@ -1,0 +1,10 @@
+{
+  "buy": "Buy",
+  "description": "Description",
+  "page_no": "Page {}",
+  "pages": "Pages",
+  "preview": "Preview",
+  "publisher": "Publisher",
+  "search_by": "Search by name, author, ISBN, ...",
+  "year": "Year"
+}
